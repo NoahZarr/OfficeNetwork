@@ -70,11 +70,22 @@ weightedAdjMat <- t(apply(adjMat, 1, function(x)(x/sum(x))))
 
 
 #create graph
-q <- qgraph(edgelist, directed = FALSE, layout = 'spring')
+transVals = centralityMeasures$Betweenness * (225/max(centralityMeasures$Betweenness)) + 20
+q <- qgraph(edgelist, directed = FALSE, layout = 'spring', color = 'grey', vTrans=transVals)
 wq <- qgraph(weightedAdjMat, directed = TRUE) #, layout = 'spring')
 
 
+####################
+# Create subgraphs #
+####################
+#graph only looking at connections with one person (automatically weighted)
 
+character <- 'Kevin'
+
+subEdgeList <- edgelist %>% 
+  filter(to==character | from==character) 
+
+sq <- qgraph(subEdgeList, directed = FALSE, layout = 'spring')
 
 ########################
 #calculate graph stats #
